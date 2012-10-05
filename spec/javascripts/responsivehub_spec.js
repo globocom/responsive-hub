@@ -164,6 +164,7 @@ describe("ResponsiveHub", function() {
 
     describe("If the resolution is present on the binding list", function() {
       beforeEach(function() {
+        $.responsiveHub("self").currentLayout = null;
         spyOn($.responsiveHub("self"), "width").andReturn(800);
 
         for (var i = 0; i < 3; i++) {
