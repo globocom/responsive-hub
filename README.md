@@ -109,6 +109,35 @@ $.responsiveHub("change", ["tablet", "web"], function(event) {
 });
 ````
 
+### Standalone Functions
+
+If you need to check some properties of the user's browser at any
+moment, there's a few functions you can use.
+
+#### Get Current Layout
+
+Returns the layout corresponding to the current window size:
+
+````javascript
+$.responsiveHub("layout"); // "tablet"
+````
+
+#### Adobe Flash Support
+
+Returns whether the browser has Flash support enabled:
+
+````javascript
+$.responsiveHub("hasFlash); // true or false
+````
+
+#### Touch Support
+
+Returns whether the browser supports touch gestures:
+
+````javascript
+$.responsiveHub(isTouch"); // true or false
+````
+
 ## Authors
 
 * [Daniel Martins](https://github.com/danielfm)
