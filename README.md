@@ -54,9 +54,9 @@ to determine how to call each screen range.
 To make things easier to visualize, in this particular example, these
 are the ranges:
 
-1. Window width >= 1024 is called **web**
-2. Window width >= 960 and < 1024 is called **tablet**
-3. Window width >= 320 and < 960 is called **phone**
+1. Window width >= 1024 is called *web*
+2. Window width >= 960 and < 1024 is called *tablet*
+3. Window width >= 320 and < 960 is called *phone*
 
 #### Initialization Callback
 
@@ -73,9 +73,9 @@ $.responsiveHub("ready", ["phone", "tablet", "web"], function(event) {
 As you can see, the `event` parameter exposes what is the current
 layout and whether the device is touch-enabled.
 
-This is useful when you want to further adjustment before the page is
-fully ready, i.e. re-initialize a pagination plugin with a different
-number of elements per page.
+This callback is useful when you want to further adjustments before
+the page is fully ready, i.e. re-initialize a pagination plugin with a
+different number of elements per page.
 
 The second parameter indicates what layouts you are interested to be
 notified about. For example, if you just need to change things for
@@ -93,7 +93,21 @@ be too late.
 
 ### Listening To Resolution Changes
 
-TODO.
+Another common need in responsive-enabled web apps is to know when the
+user changes from one layout to another in order to ajust something
+that cannot be done entirely via CSS.
+
+ResponsiveHub provides a callback just for that:
+
+````javascript
+$.responsiveHub("change", "phone", function(event) {
+  // Do something radical when the user switches to phone layout
+});
+
+$.responsiveHub("change", ["tablet", "web"], function(event) {
+  // Restore things when the user goes back to more sane layouts :-)
+});
+````
 
 ## Authors
 
