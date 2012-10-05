@@ -93,10 +93,10 @@
     },
 
     _boot: function() {
-      if (!this.resizeBound) {
+      this.hasMediaQuerySupport = Modernizr.mq("only all");
+      if (!this.resizeBound && this.hasMediaQuerySupport) {
         this.windowObj.bind("resize", this._updateLayout);
         this.resizeBound = true;
-        this.hasMediaQuerySupport = Modernizr.mq("only all");
       }
 
       if (!this.currentLayout) {

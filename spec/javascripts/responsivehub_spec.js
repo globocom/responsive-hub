@@ -58,6 +58,18 @@ describe("ResponsiveHub", function() {
       $.responsiveHub({layouts: {960: "web"}, defaultLayout: "web"});
       expect(win.unbind).toHaveBeenCalledWith($.responsiveHub("self").NAMESPACE_READY + "web");
     });
+
+    describe("If the browser doesn't support media query", function() {
+      beforeEach(function() {
+        spyOn(Modernizr, "mq").andReturn(false);
+      });
+
+      it("should not bind resize", function() {
+        spyOn(win, "bind");
+        $.responsiveHub({layouts: {960: "web"}, defaultLayout: "web"});
+        expect(win.bind).not.toHaveBeenCalled();
+      });
+    });
   });
 
   describe("layout", function() {
@@ -151,14 +163,6 @@ describe("ResponsiveHub", function() {
           768: "tablet"
         },
         defaultLayout: "web"
-      });
-    });
-
-    describe("If the browser doesn't support media query", function() {
-      beforeEach(function() {
-      });
-
-      it("should not invoke any callbacks", function() {
       });
     });
 
