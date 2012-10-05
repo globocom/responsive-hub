@@ -86,12 +86,12 @@
       }
 
       var readyEvent = this.NAMESPACE_READY + this.currentLayout;
-      windowObj.trigger(readyEvent, [{
+      this.windowObj.trigger(readyEvent, [{
         layout: this.currentLayout,
         touch: this.isTouch()
       }]);
 
-      windowObj.unbind(readyEvent);
+      this.windowObj.unbind(readyEvent);
     },
 
     _getWindow: function() {
