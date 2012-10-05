@@ -23,7 +23,65 @@ lib directory in case you do not have modernizr in your project)
 
 ## Usage
 
+### Initialization
+
+The first thing to do is define what resolutions your web app can
+handle:
+
+````javascript
+// After the document loads
+$(function() {
+
+  $.responsiveHub({
+    layouts: {
+      320:  "phone",
+      960:  "tablet",
+      1024: "web"
+    },
+    defaultLayout: "web"
+  });
+});
+
+````
+
+**Important:** This code should be the last script to run.
+
+Here, our web app supports three distinct resolutions, or layouts:
+*phone*, *tablet*, and *web*. The key associated to each value is the
+corresponding minimum screen width, in pixels, which ResponsiveHub uses
+to determine how to call each screen range.
+
+To make things easier to visualize, in this particular example, these
+are the ranges:
+
+1. Window width >= 1024 is called **web**
+2. Window width >= 960 and < 1024 is called **tablet**
+3. Window width >= 320 and < 960 is called **phone**
+
+#### Initialization Callback
+
+If you are interested to know when the ResponsiveHub is ready, you can
+use the `ready` callback:
+
+````javascript
+$.responsiveHub("ready", ["phone", "tablet", "web"], function(event) {
+  alert(event.layout); // Current layout
+  alert(event.touch);  // Whether the browser supports touch events
+});
+````
+
+This is useful when you want to so some further adjustment before the
+page is fully ready, i.e. re-initialize a pagination plugin with a
+different number of elements per page.
+
+**Important:** Just remember that you should declare the callback
+*before* the initialization shown before runs. Otherwise, it would
+be too late.
+
+### Listening To Resolution Changes
+
 TODO.
+
 
 ## Authors
 
