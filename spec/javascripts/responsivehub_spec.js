@@ -18,27 +18,27 @@ describe("ResponsiveHub", function() {
 
     it("should bind 'resize' to '_updateLayout'", function() {
       spyOn(win, "bind");
-      $.responsiveHub({layouts: {960: "web"}, default: "web"});
+      $.responsiveHub({layouts: {960: "web"}, defaultLayout: "web"});
       expect(win.bind).toHaveBeenCalledWith("resize", $.responsiveHub("self")._updateLayout);
     });
 
     it("should disable resize bound", function() {
       expect($.responsiveHub("self").resizeBound).toEqual(false);
-      $.responsiveHub({layouts: {960: "web"}, default: "web"});
+      $.responsiveHub({layouts: {960: "web"}, defaultLayout: "web"});
       expect($.responsiveHub("self").resizeBound).toEqual(true);
     });
 
     it("should detect media query support", function() {
       spyOn(Modernizr, "mq").andReturn(true);
       expect($.responsiveHub("self").hasMediaQuerySupport).toEqual(false);
-      $.responsiveHub({layouts: {960: "web"}, default: "web"});
+      $.responsiveHub({layouts: {960: "web"}, defaultLayout: "web"});
       expect($.responsiveHub("self").hasMediaQuerySupport).toEqual(true);
     });
 
     it("should calculate current layout", function() {
       spyOn($.responsiveHub("self"), "layout").andReturn("phone");
       expect($.responsiveHub("self").currentLayout).toEqual(null);
-      $.responsiveHub({layouts: {960: "web"}, default: "web"});
+      $.responsiveHub({layouts: {960: "web"}, defaultLayout: "web"});
       expect($.responsiveHub("self").currentLayout).toEqual("phone");
     });
 
@@ -46,7 +46,7 @@ describe("ResponsiveHub", function() {
       spyOn(win, "trigger");
       spyOn($.responsiveHub("self"), "layout").andReturn("phone");
       spyOn($.responsiveHub("self"), "isTouch").andReturn(true);
-      $.responsiveHub({layouts: {960: "web", 320: "phone"}, default: "web"});
+      $.responsiveHub({layouts: {960: "web", 320: "phone"}, defaultLayout: "web"});
       expect(win.trigger).toHaveBeenCalledWith($.responsiveHub("self").NAMESPACE_READY + "phone", [{
         layout: "phone",
         touch: true
@@ -55,7 +55,7 @@ describe("ResponsiveHub", function() {
 
     it("should unbind the ready event", function() {
       spyOn(win, "unbind");
-      $.responsiveHub({layouts: {960: "web"}, default: "web"});
+      $.responsiveHub({layouts: {960: "web"}, defaultLayout: "web"});
       expect(win.unbind).toHaveBeenCalledWith($.responsiveHub("self").NAMESPACE_READY + "web");
     });
   });
@@ -69,7 +69,7 @@ describe("ResponsiveHub", function() {
           960: "web",
           768: "tablet"
         },
-        default: "web"
+        defaultLayout: "web"
       });
 
     });
@@ -103,7 +103,7 @@ describe("ResponsiveHub", function() {
           960: "web",
           768: "tablet"
         },
-        default: "web"
+        defaultLayout: "web"
       });
    };
 
@@ -150,7 +150,7 @@ describe("ResponsiveHub", function() {
           960: "web",
           768: "tablet"
         },
-        default: "web"
+        defaultLayout: "web"
       });
     });
 

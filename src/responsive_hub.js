@@ -13,6 +13,7 @@
     } else if (typeof settings === "string") {
       var args = [].splice.call(arguments,0);
       var methodName = args.splice(0, 1)[0];
+
       if (ResponsiveHub[methodName]) {
         return ResponsiveHub[methodName].apply(ResponsiveHub, args);
       } else {
@@ -33,7 +34,7 @@
     init: function(settings) {
       this.windowObj = this._getWindow();
       this.layouts = settings.layouts;
-      this.default = settings.default;
+      this.defaultLayout = settings.defaultLayout;
 
       this._boot();
     },
@@ -48,7 +49,7 @@
 
     layout: function() {
       if (!this.hasMediaQuerySupport) {
-        return this.default;
+        return this.defaultLayout;
       }
 
       var widths = this._keys(this.layouts);
@@ -141,7 +142,6 @@
     _isArray: Array.isArray || function(obj) {
       return obj.toString() === '[object Array]';
     }
-
   };
 
  })(jQuery, window, document);
