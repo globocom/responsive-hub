@@ -11,11 +11,15 @@ JavaScript goodies for Responsive Design
 * Opera 10.10+
 
 Note: Be aware that browsers that does not support media query will not
-receive the 
+trigger events of layout change.
 
 ## Dependencies
 
-TODO.
+* [jQuery](http://jquery.com) 1.4.4 + (..., 1.7.2, 1.8.2)
+* [Modernizr MediaQueries](http://modernizr.com/) 2.6.2
+  (We only need media queries verification, we have a [custom
+build](https://github.com/globocom/responsive-hub/blob/master/lib/modernizr_mediaqueries.js) in
+lib directory in case you do not have modernizr in your project)
 
 ## Usage
 
