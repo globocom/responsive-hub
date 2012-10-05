@@ -70,9 +70,22 @@ $.responsiveHub("ready", ["phone", "tablet", "web"], function(event) {
 });
 ````
 
-This is useful when you want to so some further adjustment before the
-page is fully ready, i.e. re-initialize a pagination plugin with a
-different number of elements per page.
+As you can see, the `event` parameter exposes what is the current
+layout and whether the device is touch-enabled.
+
+This is useful when you want to further adjustment before the page is
+fully ready, i.e. re-initialize a pagination plugin with a different
+number of elements per page.
+
+The second parameter indicates what layouts you are interested to be
+notified about. For example, if you just need to change things for
+relatively small screen sizes (like phones), this is what you need:
+
+````javascript
+$.responsiveHub("ready", "phone", function(event) {
+  // This will not be called for bigger screen sizes
+});
+````
 
 **Important:** Just remember that you should declare the callback
 *before* the initialization shown before runs. Otherwise, it would
@@ -81,7 +94,6 @@ be too late.
 ### Listening To Resolution Changes
 
 TODO.
-
 
 ## Authors
 
