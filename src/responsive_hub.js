@@ -83,23 +83,14 @@
 
       if (!this.currentLayout) {
         this.currentLayout = this.layout();
+        var readyEvent = this.NAMESPACE_READY + this.currentLayout;
+        this.windowObj.trigger(readyEvent, [this._newEvent(this.currentLayout)]);
+        this.windowObj.unbind(readyEvent);
       }
-
-      var readyEvent = this.NAMESPACE_READY + this.currentLayout;
-      this.windowObj.trigger(readyEvent, [{
-        layout: this.currentLayout,
-        touch: this.isTouch()
-      }]);
-
-      this.windowObj.unbind(readyEvent);
     },
 
-    _getWindow: function() {
-      return $(window);
-    },
-
-    _mimeTypeFlash: function() {
-      return navigator.mimeTypes["application/x-shockwave-flash"];
+    _newEvent: function(layout) {
+      return {layout: layout, touch: this.isTouch()};
     },
 
     // https://github.com/jiujitsumind/underscorejs/blob/master/underscore.js#L644
@@ -110,8 +101,16 @@
       return keys;
     },
 
+    _getWindow: function() {
+      return $(window);
+    },
+
+    _mimeTypeFlash: function() {
+      return navigator.mimeTypes["application/x-shockwave-flash"];
+    },
+
     _isArray: Array.isArray || function(obj) {
-      return Object.prototype.toString.call(obj) === '[object Array]';
+      return obj.toString() === '[object Array]';
     }
 
   };

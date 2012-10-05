@@ -1,24 +1,63 @@
 describe("ResponsiveHub", function() {
 
+  beforeEach(function() {
+    var hub = $.responsiveHub("self");
+    hub.currentLayout = null;
+    hub.resizeBound = false;
+    hub.hasMediaQuerySupport = false;
+    hub.windowObj = null;
+  });
+
   describe("init", function() {
+    var win;
 
-     it("should bind 'resize' to '_updateLayout'", function() {
-       var win = jasmine.createSpyObj("win", ["bind"]);
-       spyOn(win, "bind");
-       spyOn($.responsiveHub("self"), "_getWindow").andReturn(win);
-       expect(win.bind).toHaveBeenCalledWith("resize", $.responsiveHub("self")._updateLayout);
-       $.responsiveHub({layouts: {960: "web"}, default: "web"});
-     });
+    beforeEach(function() {
+      win = $(window);
+      spyOn($.responsiveHub("self"), "_getWindow").andReturn(win);
+    });
 
-     it("should disable resize bound", function() {
-     });
+    it("should bind 'resize' to '_updateLayout'", function() {
+      spyOn(win, "bind");
+      $.responsiveHub({layouts: {960: "web"}, default: "web"});
+      expect(win.bind).toHaveBeenCalledWith("resize", $.responsiveHub("self")._updateLayout);
+    });
 
-     it("should detect media query support", function() {
-     });
+    it("should disable resize bound", function() {
+      expect($.responsiveHub("self").resizeBound).toEqual(false);
+      $.responsiveHub({layouts: {960: "web"}, default: "web"});
+      expect($.responsiveHub("self").resizeBound).toEqual(true);
+    });
 
-     it("should calculate current layout", function() {
-     });
+    it("should detect media query support", function() {
+      spyOn(Modernizr, "mq").andReturn(true);
+      expect($.responsiveHub("self").hasMediaQuerySupport).toEqual(false);
+      $.responsiveHub({layouts: {960: "web"}, default: "web"});
+      expect($.responsiveHub("self").hasMediaQuerySupport).toEqual(true);
+    });
 
+    it("should calculate current layout", function() {
+      spyOn($.responsiveHub("self"), "layout").andReturn("phone");
+      expect($.responsiveHub("self").currentLayout).toEqual(null);
+      $.responsiveHub({layouts: {960: "web"}, default: "web"});
+      expect($.responsiveHub("self").currentLayout).toEqual("phone");
+    });
+
+    it("should trigger the ready event with the current layout", function() {
+      spyOn(win, "trigger");
+      spyOn($.responsiveHub("self"), "layout").andReturn("phone");
+      spyOn($.responsiveHub("self"), "isTouch").andReturn(true);
+      $.responsiveHub({layouts: {960: "web", 320: "phone"}, default: "web"});
+      expect(win.trigger).toHaveBeenCalledWith($.responsiveHub("self").NAMESPACE_READY + "phone", [{
+        layout: "phone",
+        touch: true
+      }]);
+    });
+
+    it("should unbind the ready event", function() {
+      spyOn(win, "unbind");
+      $.responsiveHub({layouts: {960: "web"}, default: "web"});
+      expect(win.unbind).toHaveBeenCalledWith($.responsiveHub("self").NAMESPACE_READY + "web");
+    });
   });
 
   describe("layout", function() {
