@@ -127,7 +127,7 @@ $.responsiveHub("layout"); // "tablet"
 Returns whether the browser has Flash support enabled:
 
 ````javascript
-$.responsiveHub("hasFlash); // true or false
+$.responsiveHub("hasFlash"); // true or false
 ````
 
 #### Touch Support
@@ -135,7 +135,7 @@ $.responsiveHub("hasFlash); // true or false
 Returns whether the browser supports touch gestures:
 
 ````javascript
-$.responsiveHub(isTouch"); // true or false
+$.responsiveHub("isTouch"); // true or false
 ````
 
 ## Authors
