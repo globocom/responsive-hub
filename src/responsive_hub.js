@@ -52,14 +52,17 @@
         return this.defaultLayout;
       }
 
-      var widths = this._keys(this.layouts);
-      widths.sort();
-      widths.reverse();
+      var widths = [];
+      var keys = this._keys(this.layouts);
+      for (var j in keys) {
+        widths.push(parseInt(keys[j], 10));
+      }
 
+      widths.sort(function(a,b){return b - a});
       var width = this.width();
       for (var i in widths) {
         var w = widths[i];
-        if (width > w) return this.layouts[w];
+        if (width >= w) return this.layouts[w];
       }
 
       return this.layouts[widths[widths.length - 1]];
@@ -84,11 +87,12 @@
     },
 
     _updateLayout: function() {
-      var layout = this.layout();
+      var self = $.responsiveHub("self");
+      var layout = self.layout();
 
-      if (layout != this.currentLayout) {
-        this.currentLayout = layout;
-        this.windowObj.trigger(this.NAMESPACE + layout, [this._newEvent()]);
+      if (layout != self.currentLayout) {
+        self.currentLayout = layout;
+        self.windowObj.trigger(self.NAMESPACE + layout, [self._newEvent()]);
       }
     },
 
