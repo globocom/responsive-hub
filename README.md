@@ -1,10 +1,17 @@
 # ResponsiveHub
 
-TODO.
+JavaScript goodies for Responsive Design
 
 ## Browser Compatibility
 
-TODO.
+* IE 7+
+* Firefox 3.6+
+* Chrome 4+
+* Safari 5+
+* Opera 10.10+
+
+Note: Be aware that browsers that does not support media query will not
+receive the 
 
 ## Dependencies
 
@@ -16,7 +23,10 @@ TODO.
 
 ## Authors
 
-TODO.
+* [Daniel Martins](https://github.com/danielfm)
+* [Túlio Ornelas](https://github.com/tulios)
+* [Emerson Macedo](https://github.com/emerleite)
+* [Alexandre Magno](https://github.com/alexanmtz)
 
 ## License
 
