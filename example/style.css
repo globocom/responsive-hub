@@ -1,0 +1,64 @@
+#container {
+  width: 960px;
+  margin: 0 auto;
+}
+
+.element {
+  float: left;
+  position: relative;
+}
+
+.element .text {
+  background: #C7C7C7;
+  padding: 10px;
+  width: 150px;
+  position: absolute;
+  top: 120px;
+  left: 65px;
+  text-align: center;
+}
+
+.square {
+  width: 300px; 
+  height: 300px; 
+  background: blue;
+  margin: 10px;
+}
+
+.circle { 
+  width: 300px;
+  height: 300px;
+  background: red; 
+  -moz-border-radius: 150px; 
+  -webkit-border-radius: 150px; 
+  border-radius: 150px;
+  margin: 5px;
+}
+
+.orange {
+  background: #EDA634;
+}
+
+@media only screen and (max-width:958px) {
+  #container {
+    width: 720px;
+  }
+
+  .element:first-child {
+    margin-left: 50px;
+  }
+
+  .element:last-child {
+    margin-left: 160px;
+  }
+}
+
+@media only screen and (max-width:704px) {
+  #container {
+    width: 320px;
+  }
+
+  .element:first-child, .element:last-child {
+    margin-left: 0;
+  }
+}
