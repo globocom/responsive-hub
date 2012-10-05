@@ -85,6 +85,118 @@ describe("ResponsiveHub", function() {
       expect($.responsiveHub("layout")).toEqual("web");
     });
 
+    describe("if the resolution is smaller than the smallest layout available", function() {
+      it("should return the smallest layout", function() {
+        spyOn($.responsiveHub("self"), "width").andReturn(100);
+        expect($.responsiveHub("layout")).toEqual("phone");
+      });
+    });
+  });
+
+  describe("Ready event", function() {
+    var readyCallback;
+
+    var _initResponsiveHub = function() {
+      $.responsiveHub({
+        layouts: {
+          320: "phone",
+          960: "web",
+          768: "tablet"
+        },
+        default: "web"
+      });
+   };
+
+    beforeEach(function() {
+      readyCallback = jasmine.createSpy("onReady");
+      $.responsiveHub("ready", ["phone", "tablet"], readyCallback);
+      spyOn($.responsiveHub("self"), "isTouch").andReturn(false);
+    });
+
+    describe("If the resolution is present on the binding list", function() {
+      beforeEach(function() {
+        spyOn($.responsiveHub("self"), "width").andReturn(800);
+        _initResponsiveHub();
+      });
+
+      it("should invoke the callback for the current resolution", function() {
+        expect(readyCallback).toHaveBeenCalledWith({layout: "tablet", touch: false});
+      });
+    });
+
+    describe("If the resolution is not present on the binding list", function() {
+      beforeEach(function() {
+        spyOn($.responsiveHub("self"), "width").andReturn(1024);
+        _initResponsiveHub();
+      });
+
+      it("should not invoke any callbacks", function() {
+        expect(readyCallback).not.toHaveBeenCalled();
+      });
+    });
+  });
+
+  describe("Change event", function() {
+    var changeCallback;
+
+    beforeEach(function() {
+      changeCallback = jasmine.createSpy("onChange");
+      $.responsiveHub("change", ["phone", "tablet"], changeCallback);
+      spyOn($.responsiveHub("self"), "isTouch").andReturn(false);
+
+      $.responsiveHub({
+        layouts: {
+          320: "phone",
+          960: "web",
+          768: "tablet"
+        },
+        default: "web"
+      });
+    });
+
+    describe("If the browser doesn't support media query", function() {
+      beforeEach(function() {
+      });
+
+      it("should not invoke any callbacks", function() {
+      });
+    });
+
+    describe("If the resolution is present on the binding list", function() {
+      beforeEach(function() {
+        spyOn($.responsiveHub("self"), "width").andReturn(800);
+
+        for (var i = 0; i < 3; i++) {
+          $.responsiveHub("self")._updateLayout();
+        }
+      });
+
+      it("should update the current layout", function() {
+        expect($.responsiveHub("self").currentLayout).toEqual("tablet");
+      });
+
+      it("should invoke the callback for the current resolution just once", function() {
+        expect(changeCallback).toHaveBeenCalledWith({layout: "tablet", touch: false});
+        expect(changeCallback.callCount).toEqual(1);
+      });
+    });
+
+    describe("If the resolution is not present on the binding list", function() {
+      beforeEach(function() {
+        $.responsiveHub("self").currentLayout = "tablet";
+
+        spyOn($.responsiveHub("self"), "width").andReturn(1024);
+        $.responsiveHub("self")._updateLayout();
+      });
+
+      it("should change the current layout", function() {
+        expect($.responsiveHub("self").currentLayout).toEqual("web");
+      });
+
+      it("should not invoke any callbacks", function() {
+        expect(changeCallback).not.toHaveBeenCalled();
+      });
+    });
   });
 
   describe("width", function() {
@@ -132,5 +244,5 @@ describe("ResponsiveHub", function() {
 
   });
 
-  
+
 });

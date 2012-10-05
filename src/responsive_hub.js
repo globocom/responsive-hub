@@ -34,6 +34,7 @@
       this.windowObj = this._getWindow();
       this.layouts = settings.layouts;
       this.default = settings.default;
+
       this._boot();
     },
 
@@ -59,6 +60,16 @@
         var w = widths[i];
         if (width > w) return this.layouts[w];
       }
+
+      return this.layouts[widths[widths.length - 1]];
+    },
+
+    ready: function(layout, callback) {
+      this._bind(this.NAMESPACE_READY, layout, callback);
+    },
+
+    change: function(layout, callback) {
+      this._bind(this.NAMESPACE, layout, callback);
     },
 
     isTouch: function() {
@@ -72,6 +83,12 @@
     },
 
     _updateLayout: function() {
+      var layout = this.layout();
+
+      if (layout != this.currentLayout) {
+        this.currentLayout = layout;
+        this.windowObj.trigger(this.NAMESPACE + layout, [this._newEvent()]);
+      }
     },
 
     _boot: function() {
@@ -84,13 +101,25 @@
       if (!this.currentLayout) {
         this.currentLayout = this.layout();
         var readyEvent = this.NAMESPACE_READY + this.currentLayout;
-        this.windowObj.trigger(readyEvent, [this._newEvent(this.currentLayout)]);
+        this.windowObj.trigger(readyEvent, [this._newEvent()]);
         this.windowObj.unbind(readyEvent);
       }
     },
 
-    _newEvent: function(layout) {
-      return {layout: layout, touch: this.isTouch()};
+    _bind: function(namespace, layout, callback) {
+      var self = this;
+      var layouts = this._isArray(layout) ? layout : [layout];
+      var eventCallback = function(event, responsiveHubEvent) {
+        callback(responsiveHubEvent);
+      }
+
+      $.each(layouts, function(index, value) {
+        $(window).bind(namespace + value, eventCallback);
+      });
+    },
+
+    _newEvent: function() {
+      return {layout: this.currentLayout, touch: this.isTouch()};
     },
 
     // https://github.com/jiujitsumind/underscorejs/blob/master/underscore.js#L644
