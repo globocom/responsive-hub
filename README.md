@@ -58,6 +58,9 @@ are the ranges:
 2. Window width >= 960 and < 1024 is called *tablet*
 3. Window width >= 320 and < 960 is called *phone*
 
+Another interesting parameter is the `defaultLayout`; it is the layout
+used when the browser doesn't support media queries.
+
 #### Initialization Callback
 
 If you are interested to know when the ResponsiveHub is ready, you can
@@ -73,8 +76,8 @@ $.responsiveHub("ready", ["phone", "tablet", "web"], function(event) {
 As you can see, the `event` parameter exposes what is the current
 layout and whether the device is touch-enabled.
 
-This callback is useful when you want to further adjustments before
-the page is fully ready, i.e. re-initialize a pagination plugin with a
+This callback is useful when you need to do further adjustments before
+the page is fully ready, i.e., re-initialize a pagination plugin with a
 different number of elements per page.
 
 The second parameter indicates what layouts you are interested to be
@@ -87,14 +90,14 @@ $.responsiveHub("ready", "phone", function(event) {
 });
 ````
 
-**Important:** Just remember that you should declare the callback
+**Important:** Just remember that you must declare the callback
 *before* the initialization shown before runs. Otherwise, it would
 be too late.
 
 ### Listening To Resolution Changes
 
 Another common need in responsive-enabled web apps is to know when the
-user changes from one layout to another in order to ajust something
+user changes from one layout to another in order to adjust something
 that cannot be done entirely via CSS.
 
 ResponsiveHub provides a callback just for that:
@@ -111,8 +114,8 @@ $.responsiveHub("change", ["tablet", "web"], function(event) {
 
 ### Standalone Functions
 
-If you need to check some properties of the user's browser at any
-moment, there's a few functions you can use.
+If you need to check some properties of the browser at any moment,
+there's a few functions you can use.
 
 #### Get Current Layout
 
