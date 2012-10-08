@@ -4,7 +4,7 @@
  * version: 0.1.0
  */
 
-;(function ($, window, document) {
+(function ($, window, document) {
 
   $.responsiveHub = function(settings) {
     if (typeof settings === "object") {
@@ -129,7 +129,6 @@
 
     // https://github.com/jiujitsumind/underscorejs/blob/master/underscore.js#L644
     _keys: Object.keys || function(obj) {
-      if (obj !== Object(obj)) throw new TypeError('Invalid object');
       var keys = [];
       for (var key in obj) if (obj.hasOwnProperty(key)) keys[keys.length] = key;
       return keys;
