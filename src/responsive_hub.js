@@ -77,7 +77,8 @@
     },
 
     isTouch: function() {
-      return !!(('ontouchstart' in this.windowObj) || (this.windowObj.DocumentTouch && this.windowObj.document instanceof DocumentTouch));
+      var wnd = this.windowObj || this._getWindow();
+      return !!(('ontouchstart' in wnd) || (wnd.DocumentTouch && wnd.document instanceof DocumentTouch));
     },
 
     hasFlash: function() {

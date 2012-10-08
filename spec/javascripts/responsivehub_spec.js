@@ -217,6 +217,9 @@ describe("ResponsiveHub", function() {
   });
 
   describe("isTouch", function() {
+    it("should not fail if windowObj attribute is not initialized", function() {
+      $.responsiveHub("isTouch");
+    });
 
     it("should be true if ontouchstart exist", function() {
       var win = jasmine.createSpyObj("win", ["ontouchstart"]);
