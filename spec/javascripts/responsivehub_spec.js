@@ -247,10 +247,36 @@ describe("ResponsiveHub", function() {
         $.responsiveHub("self").windowObj = win;
         expect($.responsiveHub("isTouch")).toEqual(true);
       });
-
     });
-
   });
 
+  describe("hasFlash", function() {
+    afterEach(function() {
+      delete window.ActiveXObject;
+    });
 
+    describe("when browser supports ActiveX objects", function() {
+      it("should return true is Flash ActiveX component is installed", function() {
+        window.ActiveXObject = function(desc) { return new Object(); };
+        expect($.responsiveHub("hasFlash")).toBeTruthy();
+      });
+    });
+
+    describe("plugin detection via mime types", function() {
+      it("should return false if Flash mime type doesn't exists", function() {
+        spyOn($.responsiveHub("self"), "_mimeTypeFlash").andReturn(null);
+        expect($.responsiveHub("hasFlash")).toBeFalsy();
+      });
+
+      it("should return false if the Flash mime type is disabled", function() {
+        spyOn($.responsiveHub("self"), "_mimeTypeFlash").andReturn({enabledPlugin: false});
+        expect($.responsiveHub("hasFlash")).toBeFalsy();
+      });
+
+      it("should return false if the Flash mime type is enabled", function() {
+        spyOn($.responsiveHub("self"), "_mimeTypeFlash").andReturn({enabledPlugin: true});
+        expect($.responsiveHub("hasFlash")).toBeTruthy();
+      });
+    });
+  });
 });
