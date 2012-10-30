@@ -11,13 +11,15 @@
       ResponsiveHub.init(settings);
 
     } else if (typeof settings === "string") {
-      var args = [].splice.call(arguments,0);
+      var args = [].splice.call(arguments, 0, arguments.length);
       var methodName = args.splice(0, 1)[0];
 
       if (ResponsiveHub[methodName]) {
         return ResponsiveHub[methodName].apply(ResponsiveHub, args);
       } else {
-        throw "[ResponsiveHub] Undefined method '" + methodName + "'";
+        if (window.console && window.console.log) {
+          console.log("[ResponsiveHub] Undefined method '" + methodName + "'");
+        }
       }
     }
   }
@@ -30,13 +32,17 @@
     resizeBound: false,
     hasMediaQuerySupport: false,
     windowObj: null,
+    loaded: false,
 
     init: function(settings) {
-      this.windowObj = this._getWindow();
-      this.layouts = settings.layouts;
-      this.defaultLayout = settings.defaultLayout;
+      if (!this.loaded) {
+        this.loaded = true;
+        this.windowObj = this._getWindow();
+        this.layouts = settings.layouts;
+        this.defaultLayout = settings.defaultLayout;
 
-      this._boot();
+        this._boot();
+      }
     },
 
     self: function() {
@@ -114,7 +120,7 @@
 
     _bind: function(namespace, layout, callback) {
       var self = this;
-      var layouts = this._isArray(layout) ? layout : [layout];
+      var layouts = this._flatten(this._isArray(layout) ? layout : [layout]);
       var eventCallback = function(event, responsiveHubEvent) {
         callback(responsiveHubEvent);
       }
@@ -135,6 +141,23 @@
       return keys;
     },
 
+    _flatten: function(array, shallow) {
+      var self = this;
+      var flatten = function(input, shallow, output) {
+        for (var i = 0; i < input.length; i++) {
+          var value = input[i];
+          if (self._isArray(value)) {
+            shallow ? output.push(value) : flatten(value, shallow, output);
+          } else {
+            output.push(value);
+          }
+        }
+        return output;
+      }
+
+      return flatten(array, shallow, []);
+    },
+
     _getWindow: function() {
       return $(window);
     },
@@ -144,8 +167,8 @@
     },
 
     _isArray: Array.isArray || function(obj) {
-      return obj.toString() === '[object Array]';
+      return Object.prototype.toString.call(obj) === '[object Array]';
     }
   };
 
- })(jQuery, window, document);
+})(jQuery, window, document);

@@ -6,6 +6,7 @@ describe("ResponsiveHub", function() {
     hub.resizeBound = false;
     hub.hasMediaQuerySupport = false;
     hub.windowObj = null;
+    hub.loaded = false;
   });
 
   describe("init", function() {
@@ -24,7 +25,7 @@ describe("ResponsiveHub", function() {
 
     it("should disable resize bound", function() {
       expect($.responsiveHub("self").resizeBound).toEqual(false);
-      $.responsiveHub({layouts: {960: "web"}, defaultLayout: "web"});
+      $.responsiveHub({layouts: {960: "web"}, defaultLayout: "web"})
       expect($.responsiveHub("self").resizeBound).toEqual(true);
     });
 
@@ -59,6 +60,12 @@ describe("ResponsiveHub", function() {
       expect(win.unbind).toHaveBeenCalledWith($.responsiveHub("self").NAMESPACE_READY + "web");
     });
 
+    it("should detect if already loaded", function() {
+      expect($.responsiveHub("self").loaded).toEqual(false);
+      helpers.initResponsiveHub();
+      expect($.responsiveHub("self").loaded).toEqual(true);
+    });
+
     describe("If the browser doesn't support media query", function() {
       beforeEach(function() {
         spyOn(Modernizr, "mq").andReturn(false);
@@ -75,15 +82,7 @@ describe("ResponsiveHub", function() {
   describe("layout", function() {
 
     beforeEach(function() {
-      $.responsiveHub({
-        layouts: {
-          320: "phone",
-          960: "web",
-          768: "tablet"
-        },
-        defaultLayout: "web"
-      });
-
+      helpers.initResponsiveHub();
     });
 
     it("should return matched layout", function() {
@@ -108,17 +107,6 @@ describe("ResponsiveHub", function() {
   describe("Ready event", function() {
     var readyCallback;
 
-    var _initResponsiveHub = function() {
-      $.responsiveHub({
-        layouts: {
-          320: "phone",
-          960: "web",
-          768: "tablet"
-        },
-        defaultLayout: "web"
-      });
-   };
-
     beforeEach(function() {
       readyCallback = jasmine.createSpy("onReady");
       $.responsiveHub("ready", ["phone", "tablet"], readyCallback);
@@ -128,7 +116,7 @@ describe("ResponsiveHub", function() {
     describe("If the resolution is present on the binding list", function() {
       beforeEach(function() {
         spyOn($.responsiveHub("self"), "width").andReturn(800);
-        _initResponsiveHub();
+        helpers.initResponsiveHub();
       });
 
       it("should invoke the callback for the current resolution", function() {
@@ -139,12 +127,23 @@ describe("ResponsiveHub", function() {
     describe("If the resolution is not present on the binding list", function() {
       beforeEach(function() {
         spyOn($.responsiveHub("self"), "width").andReturn(1024);
-        _initResponsiveHub();
+        helpers.initResponsiveHub();
       });
 
       it("should not invoke any callbacks", function() {
         expect(readyCallback).not.toHaveBeenCalled();
       });
+    });
+  });
+
+  describe("Ready event called with unflattened layouts", function() {
+    it("should flatten layouts array", function() {
+      var readyCallback = jasmine.createSpy("onReady");
+      spyOn($.responsiveHub("self"), "width").andReturn(1024);
+      $.responsiveHub("ready", [["web", "phone", "tablet"]], readyCallback);
+
+      helpers.initResponsiveHub();
+      expect(readyCallback).toHaveBeenCalledWith({layout: "web", touch: false});
     });
   });
 
@@ -155,15 +154,7 @@ describe("ResponsiveHub", function() {
       changeCallback = jasmine.createSpy("onChange");
       $.responsiveHub("change", ["phone", "tablet"], changeCallback);
       spyOn($.responsiveHub("self"), "isTouch").andReturn(false);
-
-      $.responsiveHub({
-        layouts: {
-          320: "phone",
-          960: "web",
-          768: "tablet"
-        },
-        defaultLayout: "web"
-      });
+      helpers.initResponsiveHub();
     });
 
     describe("If the resolution is present on the binding list", function() {
