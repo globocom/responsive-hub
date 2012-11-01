@@ -128,6 +128,12 @@ $.responsiveHub("resizeStop", function() {
 });
 ````
 
+To know if a resize gesture is happening at any moment:
+
+````javascript
+$.responsiveHub("isResizing"); // true or false
+````
+
 ### Standalone Functions
 
 If you need to check some properties of the browser at any moment,
