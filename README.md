@@ -112,6 +112,22 @@ $.responsiveHub("change", ["tablet", "web"], function(event) {
 });
 ````
 
+### Window Resize Start/Stop Events
+
+Sometimes it's useful to know when the user initiates a resize
+gesture. Since the Window object doesn't provide a simple way to do
+that, ResponsiveHub implements the following callbacks:
+
+````javascript
+$.responsiveHub("resizeStart", function() {
+  // Called when the user initiates a resize gesture
+});
+
+$.responsiveHub("resizeStop", function() {
+  // Called when the user finishes the resize gesture
+});
+````
+
 ### Standalone Functions
 
 If you need to check some properties of the browser at any moment,

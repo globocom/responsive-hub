@@ -1,7 +1,7 @@
 /*!
  * ResponsiveHub - JavaScript goodies for Responsive Design
  * https://github.com/globocom/responsive-hub
- * version: 0.1.2
+ * version: 0.2.0
  */
 
 (function ($, window, document) {
@@ -33,6 +33,8 @@
     hasMediaQuerySupport: false,
     windowObj: null,
     loaded: false,
+    resizeStopDelay: 500,
+    _resizeTimer: null,
 
     init: function(settings) {
       if (!this.loaded) {
@@ -82,6 +84,19 @@
       this._bind(this.NAMESPACE, layout, callback);
     },
 
+    isResizing: function() {
+      return this._resizeTimer !== null;
+    },
+
+    resizeStart: function(callback) {
+      debugger;
+      this.windowObj.bind("resizeStart", callback);
+    },
+
+    resizeStop: function(callback) {
+      this.windowObj.bind("resizeStop", callback);
+    },
+
     isTouch: function() {
       var wnd = this.windowObj || this._getWindow();
       return !!(('ontouchstart' in wnd) || (wnd.DocumentTouch && wnd.document instanceof DocumentTouch));
@@ -103,10 +118,28 @@
       }
     },
 
+    _resizeStartStop: function(event) {
+      var self = $.responsiveHub("self");
+
+      if (self._resizeTimer) {
+        clearTimeout(self._resizeTimer);
+      } else {
+        self.windowObj.trigger("resizeStart", [event]);
+      }
+
+      self._resizeTimer = setTimeout(function() {
+        self._resizeTimer = null;
+        self.windowObj.trigger("resizeStop", [event]);
+      }, self.resizeStopDelay);
+    },
+
     _boot: function() {
       this.hasMediaQuerySupport = Modernizr.mq("only all");
       if (!this.resizeBound && this.hasMediaQuerySupport) {
+
         this.windowObj.bind("resize", this._updateLayout);
+        this.windowObj.bind("resize", this._resizeStartStop);
+
         this.resizeBound = true;
       }
 

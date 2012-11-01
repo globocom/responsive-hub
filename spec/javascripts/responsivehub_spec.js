@@ -1,4 +1,5 @@
 describe("ResponsiveHub", function() {
+  var win;
 
   beforeEach(function() {
     var hub = $.responsiveHub("self");
@@ -7,16 +8,12 @@ describe("ResponsiveHub", function() {
     hub.hasMediaQuerySupport = false;
     hub.windowObj = null;
     hub.loaded = false;
+
+    win = $(window);
+    spyOn($.responsiveHub("self"), "_getWindow").andReturn(win);
   });
 
   describe("init", function() {
-    var win;
-
-    beforeEach(function() {
-      win = $(window);
-      spyOn($.responsiveHub("self"), "_getWindow").andReturn(win);
-    });
-
     it("should bind 'resize' to '_updateLayout'", function() {
       spyOn(win, "bind");
       $.responsiveHub({layouts: {960: "web"}, defaultLayout: "web"});
@@ -80,7 +77,6 @@ describe("ResponsiveHub", function() {
   });
 
   describe("layout", function() {
-
     beforeEach(function() {
       helpers.initResponsiveHub();
     });
@@ -267,6 +263,53 @@ describe("ResponsiveHub", function() {
       it("should return false if the Flash mime type is enabled", function() {
         spyOn($.responsiveHub("self"), "_mimeTypeFlash").andReturn({enabledPlugin: true});
         expect($.responsiveHub("hasFlash")).toBeTruthy();
+      });
+    });
+  });
+
+  describe("Resize start-stop", function() {
+    var resizeStart, resizeStop;
+
+    beforeEach(function() {
+      helpers.initResponsiveHub();
+
+      resizeStart = jasmine.createSpy("resizeStart");
+      resizeStop  = jasmine.createSpy("resizeStop");
+
+      $.responsiveHub("resizeStart", resizeStart);
+      $.responsiveHub("resizeStop", resizeStop);
+
+      jasmine.Clock.useMock();
+
+      win.trigger("resize");
+    });
+
+    describe("When starting the resize event", function() {
+      it("should trigger the 'resizeStart' event once", function() {
+        expect(resizeStart).toHaveBeenCalled();
+      });
+
+      it("should not trigger the 'resizeStop' event", function() {
+        expect(resizeStop).not.toHaveBeenCalled();
+      })
+
+      it("should indicate that a resize gesture is happening", function() {
+        expect($.responsiveHub("isResizing")).toBeTruthy();
+      });
+    });
+
+    describe("When stoping the resize event", function() {
+      beforeEach(function() {
+        // After one second
+        jasmine.Clock.tick(1000);
+      });
+
+      it("should trigger the 'resizeStop' event", function() {
+        expect(resizeStop).toHaveBeenCalled();
+      });
+
+      it("should indicate that a resize gesture is not happening", function() {
+        expect($.responsiveHub("isResizing")).toBeFalsy();
       });
     });
   });
