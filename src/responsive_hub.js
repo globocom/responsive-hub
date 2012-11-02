@@ -89,7 +89,6 @@
     },
 
     resizeStart: function(callback) {
-      debugger;
       this.windowObj.bind("resizeStart", callback);
     },
 
