@@ -31,7 +31,6 @@ handle:
 ````javascript
 // After the document loads
 $(function() {
-
   $.responsiveHub({
     layouts: {
       320:  "phone",
