@@ -97,7 +97,7 @@
     },
 
     isTouch: function() {
-      var wnd = this.windowObj || this._getWindow();
+      var wnd = (this.windowObj || this._getWindow()).get(0);
       return !!(('ontouchstart' in wnd) || (wnd.DocumentTouch && wnd.document instanceof DocumentTouch));
     },
 

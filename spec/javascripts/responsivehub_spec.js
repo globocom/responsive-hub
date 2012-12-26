@@ -210,7 +210,7 @@ describe("ResponsiveHub", function() {
 
     it("should be true if ontouchstart exist", function() {
       var win = jasmine.createSpyObj("win", ["ontouchstart"]);
-      $.responsiveHub("self").windowObj = win;
+      $.responsiveHub("self").windowObj = $(win);
       expect($.responsiveHub("isTouch")).toEqual(true);
     });
 
@@ -231,7 +231,7 @@ describe("ResponsiveHub", function() {
           DocumentTouch: DocumentTouch,
           document: new DocumentTouch()
         };
-        $.responsiveHub("self").windowObj = win;
+        $.responsiveHub("self").windowObj = $(win);
         expect($.responsiveHub("isTouch")).toEqual(true);
       });
     });
