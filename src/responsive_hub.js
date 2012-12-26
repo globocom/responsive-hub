@@ -1,7 +1,7 @@
 /*!
  * ResponsiveHub - JavaScript goodies for Responsive Design
  * https://github.com/globocom/responsive-hub
- * version: 0.2.1
+ * version: 0.2.2
  */
 
 (function ($, window, document) {
