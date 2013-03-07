@@ -10,7 +10,7 @@ describe("ResponsiveHub", function() {
     hub.loaded = false;
 
     win = $(window);
-    spyOn($.responsiveHub("self"), "_getWindow").andReturn(win);
+    helpers.responsiveHub.setWindow(win);
   });
 
   describe("init", function() {
@@ -34,7 +34,7 @@ describe("ResponsiveHub", function() {
     });
 
     it("should calculate current layout", function() {
-      spyOn($.responsiveHub("self"), "layout").andReturn("phone");
+      helpers.responsiveHub.setLayout("phone");
       expect($.responsiveHub("self").currentLayout).toEqual(null);
       $.responsiveHub({layouts: {960: "web"}, defaultLayout: "web"});
       expect($.responsiveHub("self").currentLayout).toEqual("phone");
@@ -42,8 +42,8 @@ describe("ResponsiveHub", function() {
 
     it("should trigger the ready event with the current layout", function() {
       spyOn(win, "trigger");
-      spyOn($.responsiveHub("self"), "layout").andReturn("phone");
-      spyOn($.responsiveHub("self"), "isTouch").andReturn(true);
+      helpers.responsiveHub.setLayout("phone");
+      helpers.responsiveHub.setTouch(true);
       $.responsiveHub({layouts: {960: "web", 320: "phone"}, defaultLayout: "web"});
       expect(win.trigger).toHaveBeenCalledWith($.responsiveHub("self").NAMESPACE_READY + "phone", [{
         layout: "phone",
@@ -82,19 +82,19 @@ describe("ResponsiveHub", function() {
     });
 
     it("should return matched layout", function() {
-      spyOn($.responsiveHub("self"), "width").andReturn(800);
+      helpers.responsiveHub.setWidth(800);
       expect($.responsiveHub("layout")).toEqual("tablet");
     });
 
     it("should return 'default' if does not support media queries", function() {
-      spyOn($.responsiveHub("self"), "width").andReturn(100);
+      helpers.responsiveHub.setWidth(100);
       $.responsiveHub("self").hasMediaQuerySupport = false;
       expect($.responsiveHub("layout")).toEqual("web");
     });
 
     describe("if the resolution is smaller than the smallest layout available", function() {
       it("should return the smallest layout", function() {
-        spyOn($.responsiveHub("self"), "width").andReturn(100);
+        helpers.responsiveHub.setWidth(100);
         expect($.responsiveHub("layout")).toEqual("phone");
       });
     });
@@ -106,12 +106,12 @@ describe("ResponsiveHub", function() {
     beforeEach(function() {
       readyCallback = jasmine.createSpy("onReady");
       $.responsiveHub("ready", ["phone", "tablet"], readyCallback);
-      spyOn($.responsiveHub("self"), "isTouch").andReturn(false);
+      helpers.responsiveHub.setTouch(false);
     });
 
     describe("If the resolution is present on the binding list", function() {
       beforeEach(function() {
-        spyOn($.responsiveHub("self"), "width").andReturn(800);
+        helpers.responsiveHub.setWidth(800);
         helpers.initResponsiveHub();
       });
 
@@ -122,7 +122,7 @@ describe("ResponsiveHub", function() {
 
     describe("If the resolution is not present on the binding list", function() {
       beforeEach(function() {
-        spyOn($.responsiveHub("self"), "width").andReturn(1024);
+        helpers.responsiveHub.setWidth(1024);
         helpers.initResponsiveHub();
       });
 
@@ -135,7 +135,7 @@ describe("ResponsiveHub", function() {
   describe("Ready event called with unflattened layouts", function() {
     it("should flatten layouts array", function() {
       var readyCallback = jasmine.createSpy("onReady");
-      spyOn($.responsiveHub("self"), "width").andReturn(1024);
+      helpers.responsiveHub.setWidth(1024);
       $.responsiveHub("ready", [["web", "phone", "tablet"]], readyCallback);
 
       helpers.initResponsiveHub();
@@ -149,14 +149,14 @@ describe("ResponsiveHub", function() {
     beforeEach(function() {
       changeCallback = jasmine.createSpy("onChange");
       $.responsiveHub("change", ["phone", "tablet"], changeCallback);
-      spyOn($.responsiveHub("self"), "isTouch").andReturn(false);
+      helpers.responsiveHub.setTouch(false);
       helpers.initResponsiveHub();
     });
 
     describe("If the resolution is present on the binding list", function() {
       beforeEach(function() {
         $.responsiveHub("self").currentLayout = null;
-        spyOn($.responsiveHub("self"), "width").andReturn(800);
+        helpers.responsiveHub.setWidth(800);
 
         for (var i = 0; i < 3; i++) {
           $.responsiveHub("self")._updateLayout();
@@ -177,7 +177,7 @@ describe("ResponsiveHub", function() {
       beforeEach(function() {
         $.responsiveHub("self").currentLayout = "tablet";
 
-        spyOn($.responsiveHub("self"), "width").andReturn(1024);
+        helpers.responsiveHub.setWidth(1024);
         $.responsiveHub("self")._updateLayout();
       });
 
@@ -195,6 +195,7 @@ describe("ResponsiveHub", function() {
 
     it("should retrieve the window width", function() {
       var win = jasmine.createSpyObj("win", ["width"]);
+      helpers.responsiveHub.setWindow(win);
       $.responsiveHub("self").windowObj = win;
 
       $.responsiveHub("width");

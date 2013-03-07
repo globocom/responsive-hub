@@ -162,6 +162,82 @@ Returns whether the browser supports touch gestures:
 $.responsiveHub("isTouch"); // true or false
 ````
 
+## Testing with jasmine
+
+ResponsiveHub comes with some helpers to support your tests.
+To install includes the file **src/responsive_hub.jasmine_helpers.js**
+and do something like:
+
+```javascript
+beforeEach(function() {
+  window.helpers = (function() {
+    return {
+      responsiveHub: $.responsiveHub.jasmineHelpers
+    }
+  })();
+});
+```
+
+### Helpers
+
+#### setLayout
+
+```javascript
+it("should something...", function() {
+  helpers.responsiveHub.setLayout("phone");
+  // ...
+});
+```
+
+#### setTouch
+
+```javascript
+it("should something...", function() {
+  helpers.responsiveHub.setTouch(true);
+  // ...
+});
+```
+
+#### setWidth
+
+```javascript
+it("should something...", function() {
+  helpers.responsiveHub.setWidth(800);
+  // ...
+});
+```
+
+#### setWindow
+
+```javascript
+it("should something...", function() {
+  helpers.responsiveHub.setWindow(win);
+  // ...
+});
+```
+
+#### triggerChangeToLayout
+
+```javascript
+it("should something...", function() {
+  var callback = jasmine.createSpy("onChange");
+  $.responsiveHub("change", ["phone", "tablet"], callback);
+
+  helpers.responsiveHub.triggerChangeToLayout("phone");
+  expect(callback).toHaveBeenCalledWith({layout: "phone", touch: false});
+  // ...
+});
+```
+
+#### getLayoutWidth
+
+```javascript
+it("should something...", function() {
+  expect(helpers.responsiveHub.getLayoutWidth("web")).toBe(960);
+  // ...
+});
+```
+
 ## Authors
 
 * [Daniel Martins](https://github.com/danielfm)
