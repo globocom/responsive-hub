@@ -198,6 +198,15 @@ it("should something...", function() {
 });
 ```
 
+#### hasFlash
+
+```javascript
+it("should something...", function() {
+  helpers.responsiveHub.hasFlash(false);
+  // ...
+});
+```
+
 #### setWidth
 
 ```javascript

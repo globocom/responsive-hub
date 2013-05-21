@@ -1,7 +1,7 @@
 /*!
  * ResponsiveHub - JavaScript goodies for Responsive Design
  * https://github.com/globocom/responsive-hub
- * JasmineHelpers - version: 0.1.0
+ * JasmineHelpers - version: 0.2.0
  */
 
 if ($.responsiveHub && typeof(jasmine) === "object") {
@@ -31,6 +31,10 @@ if ($.responsiveHub && typeof(jasmine) === "object") {
 
     setTouch: function(touch) {
       this.setProperty("isTouch", touch);
+    },
+
+    hasFlash: function(flash) {
+      this.setProperty("hasFlash", flash);
     },
 
     setWidth: function(width) {

@@ -50,6 +50,14 @@ describe("ResponsiveHub.JasmineHelpers", function() {
     });
   });
 
+  describe("hasFlash", function() {
+    it("should be an alias to setProperty('hasFlash', ...)", function() {
+      spyOn(helpers.responsiveHub, "setProperty");
+      helpers.responsiveHub.hasFlash(false);
+      expect(helpers.responsiveHub.setProperty).toHaveBeenCalledWith("hasFlash", false);
+    });
+  });
+
   describe("setWidth", function() {
     it("should be an alias to setProperty('width', ...)", function() {
       spyOn(helpers.responsiveHub, "setProperty");
