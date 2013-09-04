@@ -45,7 +45,7 @@ describe("ResponsiveHub", function() {
       helpers.responsiveHub.setLayout("phone");
       helpers.responsiveHub.setTouch(true);
       $.responsiveHub({layouts: {960: "web", 320: "phone"}, defaultLayout: "web"});
-      expect(win.trigger).toHaveBeenCalledWith($.responsiveHub("self").NAMESPACE_READY + "phone", [{
+      expect(win.trigger).toHaveBeenCalledWith("responsivereadyphone", [{
         layout: "phone",
         touch: true
       }]);
@@ -54,13 +54,14 @@ describe("ResponsiveHub", function() {
     it("should unbind the ready event", function() {
       spyOn(win, "unbind");
       $.responsiveHub({layouts: {960: "web"}, defaultLayout: "web"});
-      expect(win.unbind).toHaveBeenCalledWith($.responsiveHub("self").NAMESPACE_READY + "web");
+      expect(win.unbind).toHaveBeenCalledWith("responsivereadyweb");
     });
 
     it("should detect if already loaded", function() {
       expect($.responsiveHub("self").loaded).toEqual(false);
       helpers.initResponsiveHub();
       expect($.responsiveHub("self").loaded).toEqual(true);
+      helpers.responsiveHub.unbindAllEvents();
     });
 
     describe("If the browser doesn't support media query", function() {
@@ -79,6 +80,10 @@ describe("ResponsiveHub", function() {
   describe("layout", function() {
     beforeEach(function() {
       helpers.initResponsiveHub();
+    });
+
+    afterEach(function() {
+      helpers.responsiveHub.unbindAllEvents();
     });
 
     it("should return matched layout", function() {
@@ -115,6 +120,10 @@ describe("ResponsiveHub", function() {
         helpers.initResponsiveHub();
       });
 
+      afterEach(function() {
+        helpers.responsiveHub.unbindAllEvents();
+      });
+
       it("should invoke the callback for the current resolution", function() {
         expect(readyCallback).toHaveBeenCalledWith({layout: "tablet", touch: false});
       });
@@ -124,6 +133,10 @@ describe("ResponsiveHub", function() {
       beforeEach(function() {
         helpers.responsiveHub.setWidth(1024);
         helpers.initResponsiveHub();
+      });
+
+      afterEach(function() {
+        helpers.responsiveHub.unbindAllEvents();
       });
 
       it("should not invoke any callbacks", function() {
@@ -140,6 +153,7 @@ describe("ResponsiveHub", function() {
 
       helpers.initResponsiveHub();
       expect(readyCallback).toHaveBeenCalledWith({layout: "web", touch: false});
+      helpers.responsiveHub.unbindAllEvents();
     });
   });
 
@@ -151,6 +165,10 @@ describe("ResponsiveHub", function() {
       $.responsiveHub("change", ["phone", "tablet"], changeCallback);
       helpers.responsiveHub.setTouch(false);
       helpers.initResponsiveHub();
+    });
+
+    afterEach(function() {
+      helpers.responsiveHub.unbindAllEvents();
     });
 
     describe("If the resolution is present on the binding list", function() {
@@ -283,6 +301,10 @@ describe("ResponsiveHub", function() {
       jasmine.Clock.useMock();
 
       win.trigger("resize");
+    });
+
+    afterEach(function() {
+      helpers.responsiveHub.unbindAllEvents();
     });
 
     describe("When starting the resize event", function() {
