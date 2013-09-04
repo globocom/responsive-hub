@@ -1,7 +1,7 @@
 /*!
  * ResponsiveHub - JavaScript goodies for Responsive Design
  * https://github.com/globocom/responsive-hub
- * JasmineHelpers - version: 0.2.0
+ * JasmineHelpers - version: 0.3.0
  */
 
 if ($.responsiveHub && typeof(jasmine) === "object") {
@@ -46,10 +46,29 @@ if ($.responsiveHub && typeof(jasmine) === "object") {
     },
 
     triggerChangeToLayout: function(layout) {
-      $.responsiveHub("self").currentLayout = null;
+      var instance = $.responsiveHub("self");
+
+      instance.currentLayout = null;
       this.setLayout(layout);
-      $.responsiveHub("self").windowObj = $.responsiveHub("self")._getWindow();
-      $.responsiveHub("self")._updateLayout();
+
+      instance.windowObj = instance._getWindow();
+      instance._updateLayout();
+    },
+
+    triggerLayoutReady: function(layout) {
+      var instance = $.responsiveHub("self");
+
+      instance.currentLayout = null;
+      instance.windowObj = instance._getWindow();
+
+      if (jasmine.isSpy(instance.layout)) {
+        instance.layout.reset();
+        instance.layout.andReturn(layout);
+      } else {
+        spyOn(instance, "layout").andReturn(layout);
+      }
+
+      instance._boot();
     },
 
     getLayoutWidth: function(layout) {
@@ -61,7 +80,11 @@ if ($.responsiveHub && typeof(jasmine) === "object") {
       }
 
       return null;
-    }
+    },
 
+    unbindAllEvents: function() {
+      var instance = $.responsiveHub("self");
+      instance._unbind();
+    }
   }
 }

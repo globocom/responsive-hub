@@ -1,7 +1,7 @@
 /*!
  * ResponsiveHub - JavaScript goodies for Responsive Design
  * https://github.com/globocom/responsive-hub
- * version: 0.3.0
+ * version: 0.4.0
  */
 
 (function ($, window, document) {
@@ -22,12 +22,9 @@
         }
       }
     }
-  }
+  };
 
   var ResponsiveHub = {
-    NAMESPACE: "ResponsiveHub_",
-    NAMESPACE_READY: "ResponsiveHubReady_",
-
     currentLayout: null,
     resizeBound: false,
     hasMediaQuerySupport: false,
@@ -77,11 +74,11 @@
     },
 
     ready: function(layout, callback) {
-      this._bind(this.NAMESPACE_READY, layout, callback);
+      this._bind("responsiveready", layout, callback);
     },
 
     change: function(layout, callback) {
-      this._bind(this.NAMESPACE, layout, callback);
+      this._bind("responsivechange", layout, callback);
     },
 
     isResizing: function() {
@@ -113,7 +110,7 @@
 
       if (layout != self.currentLayout) {
         self.currentLayout = layout;
-        self.windowObj.trigger(self.NAMESPACE + layout, [self._newEvent()]);
+        self.windowObj.trigger("responsivechange" + layout, [self._newEvent()]);
       }
     },
 
@@ -144,10 +141,15 @@
 
       if (!this.currentLayout) {
         this.currentLayout = this.layout();
-        var readyEvent = this.NAMESPACE_READY + this.currentLayout;
+        var readyEvent = "responsiveready" + this.currentLayout;
+
         this.windowObj.trigger(readyEvent, [this._newEvent()]);
         this.windowObj.unbind(readyEvent);
       }
+    },
+
+    _unbind: function() {
+      $(window).unbind(".responsivehub");
     },
 
     _bind: function(namespace, layout, callback) {
@@ -158,7 +160,7 @@
       }
 
       $.each(layouts, function(index, value) {
-        $(window).bind(namespace + value, eventCallback);
+        $(window).bind(namespace + value + ".responsivehub", eventCallback);
       });
     },
 
