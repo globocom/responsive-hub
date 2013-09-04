@@ -1,4 +1,4 @@
-describe("ResponsiveHub.JasmineHelpers", function() {
+describe("JasmineHelpers for ResponsiveHub", function() {
   var layout = $.responsiveHub("self").layout;
 
   afterEach(function() {
@@ -84,6 +84,22 @@ describe("ResponsiveHub.JasmineHelpers", function() {
 
       helpers.responsiveHub.triggerChangeToLayout("tablet");
       expect(callback).toHaveBeenCalledWith({layout: "tablet", touch: false});
+    });
+  });
+
+  describe("triggerLayoutReady", function() {
+    it("should trigger the ready event to the desired layout", function() {
+      var callback = jasmine.createSpy("onReady");
+      $.responsiveHub("ready", ["phone", "tablet"], callback);
+
+      helpers.responsiveHub.triggerLayoutReady("phone");
+      expect(callback).toHaveBeenCalledWith({layout: "phone", touch: false});
+
+      helpers.responsiveHub.triggerLayoutReady("tablet");
+      expect(callback).toHaveBeenCalledWith({layout: "tablet", touch: false});
+
+      helpers.responsiveHub.triggerLayoutReady("web");
+      expect(callback).not.toHaveBeenCalledWith({layout: "web", touch: false});
     });
   });
 
