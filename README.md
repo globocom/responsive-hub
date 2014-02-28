@@ -165,7 +165,9 @@ $.responsiveHub("isTouch"); // true or false
 ## Testing with jasmine
 
 ResponsiveHub comes with some helpers to support your tests.
-To install includes the file **src/responsive_hub.jasmine_helpers.js**
+There are 2 versions of it: **src/responsive_hub.jasmine_helpers.js** for
+Jasmine 1.x and **src/responsive_hub.jasmine_helpers_2.0.js**, for Jasmine 2.0.
+To install, include the helpers file for your Jasmine version
 and do something like:
 
 ```javascript
