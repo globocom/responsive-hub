@@ -9,7 +9,7 @@ if ($.responsiveHub && typeof(jasmine) === "object") {
 
     getSpyForProperty: function(property) {
       var spy = $.responsiveHub("self")[property];
-      if (spy && spy.callCount !== undefined) {
+      if (spy && spy.calls && spy.calls.count() !== undefined) {
         return spy
       }
       return null;
