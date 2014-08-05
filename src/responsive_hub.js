@@ -1,7 +1,7 @@
 /*!
  * ResponsiveHub - JavaScript goodies for Responsive Design
  * https://github.com/globocom/responsive-hub
- * version: 0.4.0
+ * version: 0.4.1
  */
 
 (function ($, window, document) {
@@ -95,7 +95,14 @@
 
     isTouch: function() {
       var wnd = (this.windowObj || this._getWindow()).get(0);
-      return !!(('ontouchstart' in wnd) || (wnd.DocumentTouch && wnd.document instanceof DocumentTouch));
+      var nvt = this._getNavigator();
+
+      return !!(
+        ('ontouchstart' in wnd) ||
+        (wnd.DocumentTouch && wnd.document instanceof DocumentTouch) ||
+        (nvt.maxTouchPoints > 0) ||
+        (nvt.msMaxTouchPoints > 0)
+      );
     },
 
     hasFlash: function() {
@@ -196,8 +203,12 @@
       return $(window);
     },
 
+    _getNavigator: function() {
+      return navigator;
+    },
+
     _mimeTypeFlash: function() {
-      return navigator.mimeTypes["application/x-shockwave-flash"];
+      return this._getNavigator().mimeTypes["application/x-shockwave-flash"];
     },
 
     _isArray: Array.isArray || function(obj) {

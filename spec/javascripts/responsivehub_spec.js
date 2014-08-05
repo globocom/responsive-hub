@@ -254,6 +254,22 @@ describe("ResponsiveHub", function() {
         expect($.responsiveHub("isTouch")).toEqual(true);
       });
     });
+
+    describe("when dealing with maxTouchPoints", function() {
+      it("should be true if maxTouchPoints > 0", function() {
+        var nvt = {maxTouchPoints: 2};
+        spyOn($.responsiveHub("self"), "_getNavigator").andReturn(nvt);
+        expect($.responsiveHub("isTouch")).toEqual(true);
+      });
+    });
+
+    describe("when dealing with msMaxTouchPoints", function() {
+      it("should be true if msMaxTouchPoints > 0", function() {
+        var nvt = {maxTouchPoints: 0, msMaxTouchPoints: 2};
+        spyOn($.responsiveHub("self"), "_getNavigator").andReturn(nvt);
+        expect($.responsiveHub("isTouch")).toEqual(true);
+      });
+    });
   });
 
   describe("hasFlash", function() {
