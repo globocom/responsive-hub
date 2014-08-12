@@ -1,7 +1,7 @@
 /*!
  * ResponsiveHub - JavaScript goodies for Responsive Design
  * https://github.com/globocom/responsive-hub
- * version: 0.4.1
+ * version: 0.5.0
  */
 
 (function ($, window, document) {
@@ -111,6 +111,10 @@
       return !! (mimeType && mimeType.enabledPlugin);
     },
 
+    triggerReadyEvent: function() {
+      this.windowObj.trigger(this._readyEvent(), [this._newEvent()]);
+    },
+
     _updateLayout: function() {
       var self = $.responsiveHub("self");
       var layout = self.layout();
@@ -148,11 +152,13 @@
 
       if (!this.currentLayout) {
         this.currentLayout = this.layout();
-        var readyEvent = "responsiveready" + this.currentLayout;
-
-        this.windowObj.trigger(readyEvent, [this._newEvent()]);
-        this.windowObj.unbind(readyEvent);
+        this.triggerReadyEvent();
+        this.windowObj.unbind(this._readyEvent());
       }
+    },
+
+    _readyEvent: function() {
+      return "responsiveready" + this.currentLayout;
     },
 
     _unbind: function() {

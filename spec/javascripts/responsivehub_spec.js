@@ -302,6 +302,19 @@ describe("ResponsiveHub", function() {
     });
   });
 
+  describe("triggerReadyEvent", function() {
+    beforeEach(function() {
+      helpers.initResponsiveHub();
+    });
+
+    it("should trigger the ready event", function() {
+      var self = $.responsiveHub("self");
+      spyOn(win, "trigger");
+      self.triggerReadyEvent();
+      expect(win.trigger).toHaveBeenCalledWith(self._readyEvent(), [self._newEvent()]);
+    });
+  });
+
   describe("Resize start-stop", function() {
     var resizeStart, resizeStop;
 

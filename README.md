@@ -133,6 +133,24 @@ To know if a resize gesture is happening at any moment:
 $.responsiveHub("isResizing"); // true or false
 ````
 
+### Force the ready event
+
+When using technologies such as pjax or turbolinks you will need to call
+the ready event after the page changes, for this scenario you will use the
+`triggerReadyEvent` method, like:
+
+```javascript
+// For turbolinks, for example
+$(document).on("page:load", function() {
+  $.responsiveHub("triggerReadyEvent");
+});
+
+// For pjax, for example
+$(document).on("pjax:complete", function() {
+  $.responsiveHub("triggerReadyEvent");
+});
+```
+
 ### Standalone Functions
 
 If you need to check some properties of the browser at any moment,
