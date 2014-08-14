@@ -151,6 +151,14 @@ $(document).on("pjax:complete", function() {
 });
 ```
 
+### Unbind all events (ready/change)
+
+When using technologies such as pjax or turbolinks you will need to unbind the "ready" and "change" events during page transitions to avoid the acumulation of events ending in a bad behavior of your javascripts. For that you can use the `unbindAllEvents` method, like:
+
+```javascript
+$.responsiveHub("unbindAllEvents");
+```
+
 ### Standalone Functions
 
 If you need to check some properties of the browser at any moment,

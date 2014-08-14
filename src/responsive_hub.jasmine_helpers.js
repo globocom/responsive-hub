@@ -83,8 +83,7 @@ if ($.responsiveHub && typeof(jasmine) === "object") {
     },
 
     unbindAllEvents: function() {
-      var instance = $.responsiveHub("self");
-      instance._unbind();
+      $.responsiveHub("self").unbindAllEvents();
     }
   }
 }

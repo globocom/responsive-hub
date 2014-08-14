@@ -315,6 +315,69 @@ describe("ResponsiveHub", function() {
     });
   });
 
+  describe("unbindAllEvents", function() {
+    var callback, qtd;
+
+    beforeEach(function() {
+      qtd = 3;
+      callback = jasmine.createSpy("onCallback");
+    });
+
+    describe("for ready event", function() {
+      it("should unbind all ready events", function() {
+        for (var i = 0; i < qtd; i++) {
+          $.responsiveHub("ready", ["phone", "tablet", "web"], callback);
+        }
+
+        helpers.responsiveHub.setTouch(false);
+        helpers.initResponsiveHub();
+
+        expect(callback).toHaveBeenCalledWith({layout: "web", touch: false});
+        expect(callback.callCount).toEqual(qtd);
+
+        for (var i = 0; i < qtd; i++) {
+          $.responsiveHub("ready", ["phone", "tablet", "web"], callback);
+        }
+
+        $.responsiveHub("self").unbindAllEvents();
+        $.responsiveHub("self").triggerReadyEvent();
+
+        expect(callback).toHaveBeenCalledWith({layout: "web", touch: false});
+        expect(callback.callCount).not.toEqual(qtd * 2);
+        expect(callback.callCount).toEqual(qtd);
+      });
+    });
+
+    describe("for change event", function() {
+      beforeEach(function() {
+        helpers.responsiveHub.setTouch(false);
+        helpers.initResponsiveHub();
+      });
+
+      it("should unbind all change events", function() {
+        for (var i = 0; i < qtd; i++) {
+          $.responsiveHub("change", ["phone", "tablet", "web"], callback);
+        }
+
+        helpers.responsiveHub.triggerChangeToLayout("web");
+
+        expect(callback).toHaveBeenCalledWith({layout: "web", touch: false});
+        expect(callback.callCount).toEqual(qtd);
+
+        for (var i = 0; i < qtd; i++) {
+          $.responsiveHub("ready", ["phone", "tablet", "web"], callback);
+        }
+
+        $.responsiveHub("self").unbindAllEvents();
+        helpers.responsiveHub.triggerChangeToLayout("web");
+
+        expect(callback).toHaveBeenCalledWith({layout: "web", touch: false});
+        expect(callback.callCount).not.toEqual(qtd * 2);
+        expect(callback.callCount).toEqual(qtd);
+      });
+    });
+  });
+
   describe("Resize start-stop", function() {
     var resizeStart, resizeStop;
 

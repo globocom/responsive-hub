@@ -115,6 +115,10 @@
       this.windowObj.trigger(this._readyEvent(), [this._newEvent()]);
     },
 
+    unbindAllEvents: function() {
+      $(window).unbind(".responsivehub");
+    },
+
     _updateLayout: function() {
       var self = $.responsiveHub("self");
       var layout = self.layout();
@@ -159,10 +163,6 @@
 
     _readyEvent: function() {
       return "responsiveready" + this.currentLayout;
-    },
-
-    _unbind: function() {
-      $(window).unbind(".responsivehub");
     },
 
     _bind: function(namespace, layout, callback) {
