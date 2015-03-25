@@ -17,8 +17,8 @@
       if (ResponsiveHub[methodName]) {
         return ResponsiveHub[methodName].apply(ResponsiveHub, args);
       } else {
-        if (window.console && window.console.log) {
-          console.log("[ResponsiveHub] Undefined method '" + methodName + "'");
+        if (window.console && window.console.warn) {
+          console.warn("[ResponsiveHub] Undefined method '" + methodName + "'");
         }
       }
     }
